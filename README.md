@@ -90,7 +90,7 @@ smart-tourist-safety/
 
 ```
 git clone https://github.com/naajissiddiqui/SafeSync.git
-cd sSafeSync
+cd SafeSync
 ```
 
 ### 2️⃣ Setup Environment Variables
@@ -164,7 +164,6 @@ Open:
 
 ![Map](assets/map.png)
 
-(Add screenshots of your app here — dashboard, QR, map, SOS panel)
 
 ## 🚀 Future Improvements
 
