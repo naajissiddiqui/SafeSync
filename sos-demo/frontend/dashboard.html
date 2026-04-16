@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Police SOS Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; }
+    header { background:#2c3e50; color:white; padding:10px 20px; text-align:center; }
+    #container { display:flex; height:calc(100vh - 60px); }
+    #map { flex:2; }
+    #alerts { flex:1; overflow-y:auto; padding:10px; border-left:1px solid #ccc; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border:1px solid #ccc; padding:5px; text-align:left; }
+    tr.new-alert { background:#ffcccc; }
+    tr.seen { background:#fff3b0; }
+    tr.responded { background:#ccffcc; }
+    button { padding:3px 6px; cursor:pointer; }
+  </style>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <header>
+    <h2>Police SOS Dashboard</h2>
+    <div id="lastUpdated"></div>
+  </header>
+  <div id="container">
+    <div id="map"></div>
+    <div id="alerts">
+      <h3>Alerts</h3>
+      <table id="alertsTable">
+        <thead>
+          <tr>
+            <th>Tourist ID</th>
+            <th>Time</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const map = L.map("map").setView([19.076, 72.8777], 12); // Default Mumbai
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+    let markers = {};
+
+    async function fetchAlerts() {
+      try {
+        const res = await fetch("http://localhost:5000/api/sos");
+        const sosList = await res.json();
+
+        const tbody = document.querySelector("#alertsTable tbody");
+        tbody.innerHTML = ""; // clear table each refresh
+
+        // Remove old markers
+        for (let key in markers) map.removeLayer(markers[key]);
+        markers = {};
+
+        sosList.forEach(sos => {
+          // Add marker
+          let color = sos.status === "responded" ? "green" :
+                      sos.status === "seen" ? "orange" : "red";
+          let icon = L.icon({
+            iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+            iconSize: [32,32],
+          });
+          const marker = L.marker([sos.latitude, sos.longitude], {icon}).addTo(map);
+          marker.bindPopup(`<b>Tourist:</b> ${sos.touristId}<br><b>Msg:</b> ${sos.message}`);
+          markers[sos._id] = marker;
+
+          // Add table row
+          const tr = document.createElement("tr");
+          tr.className = sos.status === "responded" ? "responded" :
+                         sos.status === "seen" ? "seen" : "new-alert";
+
+          tr.innerHTML = `
+            <td>${sos.touristId}</td>
+            <td>${new Date(sos.timestamp).toLocaleString()}</td>
+            <td>${sos.message}</td>
+            <td>${sos.status}</td>
+            <td><button onclick="acknowledge('${sos._id}')">Acknowledge</button></td>
+          `;
+
+          // Click row → open marker popup
+          tr.addEventListener("click", () => {
+            map.setView([sos.latitude, sos.longitude], 15);
+            marker.openPopup();
+          });
+
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("lastUpdated").innerText = "Last Updated: " + new Date().toLocaleTimeString();
+      } catch (err) {
+        console.error("Error fetching alerts:", err);
+      }
+    }
+
+    async function acknowledge(id) {
+      try {
+        // Send request to backend to update status (mock example)
+        await fetch(`http://localhost:5000/api/sos/${id}/acknowledge`, { method:"POST" });
+        fetchAlerts(); // refresh
+      } catch(err) {
+        console.error(err);
+      }
+    }
+
+    // Initial fetch + auto refresh every 5s
+    fetchAlerts();
+    setInterval(fetchAlerts, 5000);
+  </script>
+</body>
+</html>

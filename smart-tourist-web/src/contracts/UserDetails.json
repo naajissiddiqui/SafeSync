@@ -1,0 +1,100 @@
+{
+  "address": "0xbB8AdF8832570B97A23eb5Eb0F1391f113412541",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "TouristRegistered",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getTourist",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "contact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "aadhar",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "passport",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "nationality",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "emergency",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_contact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_aadhar",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_passport",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_nationality",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_emergency",
+          "type": "string"
+        }
+      ],
+      "name": "registerTourist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

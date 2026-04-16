@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "ethers": "^5.8.0",
+    "expo-clipboard": "~8.0.7",
+    "qrcode": "^1.5.4",
+    "qrcode.react": "^4.2.0",
+    "react-native-get-random-values": "~1.11.0",
+    "react-native-qrcode-svg": "^6.3.15",
+    "react-native-svg": "15.12.1",
+    "react-qr-code": "^2.0.18"
+  }
+}
