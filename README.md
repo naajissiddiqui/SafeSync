@@ -1,7 +1,6 @@
 # 🚨 Smart Tourist Safety System
 
 A blockchain-powered safety platform designed to enhance tourist security through digital identity, real-time monitoring, and emergency response systems. 
-
 ## 🌍 Overview
 
 This project integrates Web3 identity + real-time SOS alerts + geospatial risk analysis to provide a comprehensive safety ecosystem for travelers.
